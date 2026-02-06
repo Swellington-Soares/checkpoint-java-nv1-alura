@@ -386,3 +386,11 @@ gradle test
 ## ✅ Conclusão
 
 Este projeto representa uma base sólida para aplicações backend modernas, servindo como exercício prático de arquitetura, organização e desenvolvimento com Java e Spring Boot.
+
+
+## 💫 Futuro
+
+-[ ] Terminar a documentação em Swagger (Tá bugando algumas coisas ainda)
+-[ ] Implementar perfis de usuário (ADMIN, PREMIUM, ETC)
+-[ ] Implementar autorização e autenticação [ ]
+-[ ] Implementar um sistema simples com mensageria para notificação.
