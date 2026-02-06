@@ -1,0 +1,79 @@
+package dev.suel.checkpointjavanv1alura.domain.entity.usuario.validators;
+
+import dev.suel.checkpointjavanv1alura.exception.BusinessArgumentException;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+import dev.suel.checkpointjavanv1alura.domain.entity.usuario.Usuario;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.MockedStatic;
+import org.mockito.junit.jupiter.MockitoExtension;
+
+import java.time.LocalDate;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Answers.CALLS_REAL_METHODS;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.mockStatic;
+
+@ExtendWith(MockitoExtension.class)
+class UsuarioNomeValidatorImplTest {
+    @Mock
+    private Usuario usuario;
+
+    private final UsuarioNomeValidatorImpl validator = new UsuarioNomeValidatorImpl();
+
+    @Test
+    void execute_deveLancarExcecao_quandoNomeForNull() {
+        given(usuario.getNome()).willReturn(null);
+
+        var ex = assertThrows(IllegalArgumentException.class, () -> validator.execute(usuario));
+
+        assertEquals("Nome é obrigatório.", ex.getMessage());
+    }
+
+    @Test
+    void execute_deveLancarExcecao_quandoNomeForVazio() {
+        given(usuario.getNome()).willReturn("");
+
+        var ex = assertThrows(IllegalArgumentException.class, () -> validator.execute(usuario));
+
+        assertEquals("Nome é obrigatório.", ex.getMessage());
+    }
+
+    @Test
+    void execute_deveLancarExcecao_quandoNomeTrimForMaiorQue20() {
+        given(usuario.getNome()).willReturn("123456789012345678901");
+
+        var ex = assertThrows(IllegalArgumentException.class, () -> validator.execute(usuario));
+
+        assertEquals("Nome muito longo. Máximo de 20 caracteres permitidos.", ex.getMessage());
+    }
+
+    @Test
+    void execute_deveLancarExcecao_quandoNomeForApenasLetras() {
+        given(usuario.getNome()).willReturn("Joao");
+
+        var ex = assertThrows(IllegalArgumentException.class, () -> validator.execute(usuario));
+
+        assertEquals("Nome inválido, apenas letras são permitidas.", ex.getMessage());
+    }
+
+    @Test
+    void execute_naoDeveLancarExcecao_quandoNomeNaoForApenasLetras_eEstiverNoLimite() {
+        given(usuario.getNome()).willReturn("Joao1");
+
+        assertThrows(BusinessArgumentException.class, () -> validator.execute(usuario));
+    }
+
+    @Test
+    void execute_naoDeveLancarExcecao_quandoNomeTrimTiverExatamente20Caracteres() {
+        given(usuario.getNome()).willReturn("12345678901234567890");
+
+        assertDoesNotThrow(() -> validator.execute(usuario));
+    }
+}
