@@ -3,6 +3,7 @@ package dev.suel.checkpointjavanv1alura.domain.entity.sala;
 
 import dev.suel.checkpointjavanv1alura.domain.entity.sala.validators.ISalaValidator;
 import dev.suel.checkpointjavanv1alura.exception.IllegalActionException;
+import dev.suel.checkpointjavanv1alura.exception.SalaNaoExisteException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -21,7 +22,8 @@ public class SalaService {
     private final List<ISalaValidator> salaValidatorList;
 
     public Sala findById(Long salaId) {
-        return salaRepository.findById(salaId).orElseThrow();
+        return salaRepository.findById(salaId).orElseThrow(() ->
+                new SalaNaoExisteException(salaId));
     }
 
     @Transactional

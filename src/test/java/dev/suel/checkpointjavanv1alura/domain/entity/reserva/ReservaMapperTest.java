@@ -62,7 +62,7 @@ class ReservaMapperTest {
         assertEquals(FormatterUtil.formatarDataHora(fim), result.dataFim());
 
         assertEquals(SituacaoReserva.ATIVA, result.situacao());
-        assertFalse(result.cancelado());
+
     }
 
     @Test
@@ -91,7 +91,7 @@ class ReservaMapperTest {
 
         var result = mapper.toInfoResponse(reserva);
 
-        assertTrue(result.cancelado());
+     
         assertEquals(SituacaoReserva.CANCELADA, result.situacao());
     }
 

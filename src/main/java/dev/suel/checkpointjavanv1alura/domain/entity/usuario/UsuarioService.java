@@ -42,7 +42,7 @@ public class UsuarioService {
 
     @Transactional
     public void atualizar(Long id, UsuarioUpdateData data) {
-        var usuario = usuarioRepository.findById(id).orElseThrow();
+        var usuario = findById(id);
         usuarioMapper.atualizacaoParcial(usuario, data);
         usuarioValidatorList.forEach(usuarioValidator -> usuarioValidator.execute(usuario));
     }

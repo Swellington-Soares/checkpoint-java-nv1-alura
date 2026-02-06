@@ -1,5 +1,8 @@
 package dev.suel.checkpointjavanv1alura.domain.entity.reserva;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -38,4 +41,5 @@ public interface ReservaRepository extends JpaRepository<Reserva, UUID> {
             """)
     List<Reserva> buscarConflitosPorSalaOuUsuario(Long salaId, Long usuarioId, LocalDateTime dataInicio, LocalDateTime dataFim);
 
+    Page<Reserva> findAll(Specification<Reserva> spec, Pageable pageable);
 }

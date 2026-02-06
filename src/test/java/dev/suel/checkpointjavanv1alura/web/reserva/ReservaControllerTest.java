@@ -5,6 +5,7 @@ import dev.suel.checkpointjavanv1alura.domain.entity.reserva.ReservaMapper;
 import dev.suel.checkpointjavanv1alura.domain.entity.reserva.ReservaService;
 import dev.suel.checkpointjavanv1alura.domain.entity.reserva.SituacaoReserva;
 import dev.suel.checkpointjavanv1alura.web.reserva.data.ReservaCanceladaResponse;
+import dev.suel.checkpointjavanv1alura.web.reserva.data.ReservaFiltro;
 import dev.suel.checkpointjavanv1alura.web.reserva.data.ReservaInfoResponse;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,7 +49,7 @@ class ReservaControllerTest {
                 2
         );
 
-        given(reservaService.findAll(any(Pageable.class))).willReturn(slice);
+        given(reservaService.findAll(any(ReservaFiltro.class), any(Pageable.class))).willReturn(slice);
         given(reservaMapper.toInfoResponse(r1)).willReturn(infoResponse(r1.getId()));
         given(reservaMapper.toInfoResponse(r2)).willReturn(infoResponse(r2.getId()));
 
@@ -67,7 +68,7 @@ class ReservaControllerTest {
                 .andExpect(jsonPath("$.page.totalElements").value(2))
                 .andExpect(jsonPath("$.page.totalPages").value(1));
 
-        then(reservaService).should().findAll(any(Pageable.class));
+        then(reservaService).should().findAll(any(ReservaFiltro.class),any(Pageable.class));
         then(reservaMapper).should().toInfoResponse(r1);
         then(reservaMapper).should().toInfoResponse(r2);
     }
@@ -97,7 +98,6 @@ class ReservaControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"))
                 .andExpect(jsonPath("$.situacao").value("ATIVA"))
-                .andExpect(jsonPath("$.cancelado").value(false))
                 .andExpect(jsonPath("$.usuario").exists())
                 .andExpect(jsonPath("$.usuario.cpf").value("52998224725"))
                 .andExpect(jsonPath("$.sala").exists())
@@ -185,7 +185,7 @@ class ReservaControllerTest {
                 }
                 """;
 
-        mvc.perform(patch("/api/v1/reservas/{id}", id)
+        mvc.perform(patch("/api/v1/reservas/{id}/cancelar", id)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(body)
                         .accept(MediaType.APPLICATION_JSON))
@@ -203,17 +203,17 @@ class ReservaControllerTest {
         var id = UUID.fromString("cccccccc-cccc-cccc-cccc-cccccccccccc");
         var reserva = reservaComId(id);
 
-        given(reservaService.getById(id)).willReturn(reserva);
+        given(reservaService.findById(id)).willReturn(reserva);
         given(reservaMapper.toInfoResponse(reserva)).willReturn(infoResponse(id));
 
         mvc.perform(get("/api/v1/reservas/{id}", id)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value("cccccccc-cccc-cccc-cccc-cccccccccccc"))
-                .andExpect(jsonPath("$.situacao").value("ATIVA"))
-                .andExpect(jsonPath("$.cancelado").value(false));
+                .andExpect(jsonPath("$.situacao").value("ATIVA"));
 
-        then(reservaService).should().getById(id);
+
+        then(reservaService).should().findById(id);
         then(reservaMapper).should().toInfoResponse(reserva);
     }
 
@@ -245,8 +245,7 @@ class ReservaControllerTest {
                 new ReservaInfoResponse.SalaInfo(1L, "Sala 1", 20),
                 "2030-01-01T10:00:00",
                 "2030-01-01T12:00:00",
-                SituacaoReserva.ATIVA,
-                false
+                SituacaoReserva.ATIVA
         );
     }
 }

@@ -10,8 +10,7 @@ public record ReservaInfoResponse(
         SalaInfo sala,
         String dataInicio,
         String dataFim,
-        SituacaoReserva situacao,
-        boolean cancelado
+        SituacaoReserva situacao
 ) {
     public record UsuarioInfo(
             String cpf,

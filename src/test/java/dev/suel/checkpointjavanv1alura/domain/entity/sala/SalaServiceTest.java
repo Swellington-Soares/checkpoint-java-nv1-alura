@@ -2,6 +2,7 @@ package dev.suel.checkpointjavanv1alura.domain.entity.sala;
 
 import dev.suel.checkpointjavanv1alura.domain.entity.sala.validators.ISalaValidator;
 import dev.suel.checkpointjavanv1alura.exception.IllegalActionException;
+import dev.suel.checkpointjavanv1alura.exception.SalaNaoExisteException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -55,7 +56,7 @@ class SalaServiceTest {
     void findById_quandoNaoExiste_deveLancar() {
         given(salaRepository.findById(99L)).willReturn(Optional.empty());
 
-        assertThrows(NoSuchElementException.class, () -> salaService.findById(99L));
+        assertThrows(SalaNaoExisteException.class, () -> salaService.findById(99L));
 
         then(salaRepository).should().findById(99L);
     }

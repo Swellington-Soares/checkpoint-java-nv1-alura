@@ -28,8 +28,7 @@ public class ReservaMapper {
                 ),
                 FormatterUtil.formatarDataHora(reserva.getDataInicio()),
                 FormatterUtil.formatarDataHora(reserva.getDataFim()),
-                reserva.getSituacao(),
-                reserva.getDataCancelamento() != null
+                reserva.getSituacao()
 
         );
     }

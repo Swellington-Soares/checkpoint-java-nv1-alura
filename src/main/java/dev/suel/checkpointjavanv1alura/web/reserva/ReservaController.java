@@ -3,10 +3,8 @@ package dev.suel.checkpointjavanv1alura.web.reserva;
 
 import dev.suel.checkpointjavanv1alura.domain.entity.reserva.ReservaMapper;
 import dev.suel.checkpointjavanv1alura.domain.entity.reserva.ReservaService;
-import dev.suel.checkpointjavanv1alura.web.reserva.data.ReservaCadastroData;
-import dev.suel.checkpointjavanv1alura.web.reserva.data.ReservaCanceladaResponse;
-import dev.suel.checkpointjavanv1alura.web.reserva.data.ReservaCancelamentoData;
-import dev.suel.checkpointjavanv1alura.web.reserva.data.ReservaInfoResponse;
+import dev.suel.checkpointjavanv1alura.domain.entity.reserva.SituacaoReserva;
+import dev.suel.checkpointjavanv1alura.web.reserva.data.*;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -15,6 +13,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @RestController
@@ -27,8 +26,11 @@ public class ReservaController {
     private final ReservaMapper reservaMapper;
 
     @GetMapping
-    ResponseEntity<Page<ReservaInfoResponse>> getAll(Pageable pageable) {
-        var reservas = reservaService.findAll(pageable)
+    ResponseEntity<Page<ReservaInfoResponse>> getAll(
+            @ModelAttribute ReservaFiltro filtro,
+            Pageable pageable) {
+
+        var reservas = reservaService.findAll(filtro, pageable)
                 .map(reservaMapper::toInfoResponse);
         return ResponseEntity.ok(reservas);
     }
@@ -45,7 +47,7 @@ public class ReservaController {
         );
     }
 
-    @PatchMapping("/{id}")
+    @PatchMapping("/{id}/cancelar")
     ResponseEntity<ReservaCanceladaResponse> cancelar(
             @PathVariable UUID id,
             @RequestBody ReservaCancelamentoData data) {
@@ -56,7 +58,7 @@ public class ReservaController {
 
     @GetMapping("/{id}")
     ResponseEntity<ReservaInfoResponse> showDetail(@PathVariable UUID id) {
-        return ResponseEntity.ok( reservaMapper.toInfoResponse( reservaService.getById(id) ) );
+        return ResponseEntity.ok( reservaMapper.toInfoResponse( reservaService.findById(id) ) );
     }
 
 

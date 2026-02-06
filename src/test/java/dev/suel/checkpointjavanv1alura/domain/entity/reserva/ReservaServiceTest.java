@@ -5,6 +5,7 @@ import dev.suel.checkpointjavanv1alura.domain.entity.sala.Sala;
 import dev.suel.checkpointjavanv1alura.domain.entity.sala.SalaService;
 import dev.suel.checkpointjavanv1alura.domain.entity.usuario.Usuario;
 import dev.suel.checkpointjavanv1alura.domain.entity.usuario.UsuarioService;
+import dev.suel.checkpointjavanv1alura.exception.ReservaNaoExisteException;
 import dev.suel.checkpointjavanv1alura.exception.SalaJaReservadaException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -135,7 +136,7 @@ class ReservaServiceTest {
         var id = UUID.fromString("bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb");
         given(reservaRepository.findById(id)).willReturn(Optional.empty());
 
-        assertThrows(NoSuchElementException.class, () -> reservaService.cancelarReserva(id, "x"));
+        assertThrows(ReservaNaoExisteException.class, () -> reservaService.cancelarReserva(id, "x"));
 
         then(reservaRepository).should().findById(id);
     }
@@ -163,25 +164,25 @@ class ReservaServiceTest {
     }
 
     @Test
-    void getById_quandoExiste_deveRetornar() {
+    void findById_quandoExiste_deveRetornar() {
         var id = UUID.fromString("dddddddd-dddd-dddd-dddd-dddddddddddd");
         var reserva = new Reserva();
         reserva.setId(id);
 
         given(reservaRepository.findById(id)).willReturn(Optional.of(reserva));
 
-        var result = reservaService.getById(id);
+        var result = reservaService.findById(id);
 
         assertSame(reserva, result);
         then(reservaRepository).should().findById(id);
     }
 
     @Test
-    void getById_quandoNaoExiste_deveLancar() {
+    void findById_quandoNaoExiste_deveLancar() {
         var id = UUID.fromString("eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee");
         given(reservaRepository.findById(id)).willReturn(Optional.empty());
 
-        assertThrows(NoSuchElementException.class, () -> reservaService.getById(id));
+        assertThrows(ReservaNaoExisteException.class, () -> reservaService.findById(id));
 
         then(reservaRepository).should().findById(id);
     }

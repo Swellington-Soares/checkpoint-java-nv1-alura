@@ -158,7 +158,7 @@ class UsuarioServiceTest {
         var data = new UsuarioUpdateData(null, null, null, null, null);
         given(usuarioRepository.findById(404L)).willReturn(Optional.empty());
 
-        assertThrows(NoSuchElementException.class, () -> usuarioService.atualizar(404L, data));
+        assertThrows(UsuarioNaoExisteException.class, () -> usuarioService.atualizar(404L, data));
 
         then(usuarioRepository).should().findById(404L);
         then(usuarioMapper).shouldHaveNoInteractions();
