@@ -1,0 +1,39 @@
+services:
+  mariadb:
+    container_name: mariadb-alura1
+    image: mariadb:11
+    environment:
+      MARIADB_ROOT_PASSWORD: rootx
+      MARIADB_USER: alura
+      MARIADB_PASSWORD: alura
+      MARIADB_DATABASE: alura1
+    restart: unless-stopped
+    healthcheck:
+      test: [ "CMD", "mariadb-admin", "ping", "-h", "localhost", "-u", "root", "-prootx" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    volumes:
+      - mariadb_alura:/var/lib/mysql
+    ports:
+      - "3307:3306"
+
+  alura-app:
+    container_name: alura-app
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: app
+    environment:
+      SPRING_PROFILES_ACTIVE: prod
+      DATABASE_URL: jdbc:mariadb://mariadb-alura1:3306/alura1
+      DATABASE_USERNAME: alura
+      DATABASE_PASSWORD: alura
+    ports:
+      - "8080:8080"
+    depends_on:
+      mariadb:
+        condition: service_healthy
+
+volumes:
+  mariadb_alura:

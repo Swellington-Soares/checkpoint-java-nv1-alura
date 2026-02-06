@@ -1,0 +1,22 @@
+services:
+  mariadb:
+    container_name: mariadb-alura-dev
+    image: mariadb:11
+    environment:
+      MARIADB_ROOT_PASSWORD: rootx
+      MARIADB_USER: alura
+      MARIADB_PASSWORD: alura
+      MARIADB_DATABASE: alura1
+    restart: on-failure
+    healthcheck:
+      test: [ "CMD", "mariadb-admin", "ping", "-h", "localhost", "-u", "root", "-prootx" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    volumes:
+      - mariadb_alura:/var/lib/mysql
+    ports:
+      - "3307:3306"
+
+volumes:
+  mariadb_alura:
