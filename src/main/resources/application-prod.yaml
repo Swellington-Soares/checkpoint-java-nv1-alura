@@ -1,0 +1,13 @@
+spring:
+  datasource:
+    url: ${DATABASE_URL:jdbc:mariadb://localhost:3306/alura1}
+    username: ${DATABASE_USERNAME:alura}
+    password: ${DATABASE_PASSWORD:alura}
+    driver-class-name: org.mariadb.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+
+  docker:
+    compose:
+      enabled: false

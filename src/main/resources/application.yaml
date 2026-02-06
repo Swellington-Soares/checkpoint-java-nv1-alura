@@ -1,0 +1,17 @@
+spring:
+  application:
+    name: checkpoint-java-nv1-alura
+
+  jackson:
+    default-property-inclusion: non_null
+
+  docker:
+    compose:
+      enabled: false
+
+logging:
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} %-5level [%thread] %logger{36} - %msg%n"
+
+
+
