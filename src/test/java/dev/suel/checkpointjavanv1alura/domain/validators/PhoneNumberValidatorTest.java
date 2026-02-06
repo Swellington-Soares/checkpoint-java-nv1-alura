@@ -23,12 +23,12 @@ class PhoneNumberValidatorTest {
 
     @Test
     void isValid_quandoPhoneValidoMinimo_deveRetornarTrue() {
-        assertTrue(PhoneNumberValidator.isValid("+12345678"));
+        assertTrue(PhoneNumberValidator.isValid("+558899999999"));
     }
 
     @Test
     void isValid_quandoPhoneValidoMaximo_deveRetornarTrue() {
-        assertTrue(PhoneNumberValidator.isValid("+123456789012345"));
+        assertTrue(PhoneNumberValidator.isValid("+5588999999999"));
     }
 
     @Test

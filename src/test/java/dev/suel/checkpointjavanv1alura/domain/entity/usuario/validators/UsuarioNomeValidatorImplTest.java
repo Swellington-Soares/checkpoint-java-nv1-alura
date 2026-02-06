@@ -31,7 +31,7 @@ class UsuarioNomeValidatorImplTest {
     void execute_deveLancarExcecao_quandoNomeForNull() {
         given(usuario.getNome()).willReturn(null);
 
-        var ex = assertThrows(IllegalArgumentException.class, () -> validator.execute(usuario));
+        var ex = assertThrows(BusinessArgumentException.class, () -> validator.execute(usuario));
 
         assertEquals("Nome é obrigatório.", ex.getMessage());
     }
@@ -40,40 +40,35 @@ class UsuarioNomeValidatorImplTest {
     void execute_deveLancarExcecao_quandoNomeForVazio() {
         given(usuario.getNome()).willReturn("");
 
-        var ex = assertThrows(IllegalArgumentException.class, () -> validator.execute(usuario));
+        var ex = assertThrows(BusinessArgumentException.class, () -> validator.execute(usuario));
 
         assertEquals("Nome é obrigatório.", ex.getMessage());
     }
 
     @Test
     void execute_deveLancarExcecao_quandoNomeTrimForMaiorQue20() {
-        given(usuario.getNome()).willReturn("123456789012345678901");
+        given(usuario.getNome()).willReturn("SwellingtonSoaresABCACVF");
 
-        var ex = assertThrows(IllegalArgumentException.class, () -> validator.execute(usuario));
+        var ex = assertThrows(BusinessArgumentException.class, () -> validator.execute(usuario));
 
         assertEquals("Nome muito longo. Máximo de 20 caracteres permitidos.", ex.getMessage());
     }
 
     @Test
-    void execute_deveLancarExcecao_quandoNomeForApenasLetras() {
+    void execute_naoDeveLancarExcecao_quandoNomeForApenasLetras() {
         given(usuario.getNome()).willReturn("Joao");
-
-        var ex = assertThrows(IllegalArgumentException.class, () -> validator.execute(usuario));
-
-        assertEquals("Nome inválido, apenas letras são permitidas.", ex.getMessage());
+        assertDoesNotThrow(() -> validator.execute(usuario));
     }
 
     @Test
-    void execute_naoDeveLancarExcecao_quandoNomeNaoForApenasLetras_eEstiverNoLimite() {
+    void execute_deveLancarExcecao_quandoNomeNaoForApenasLetras_eEstiverNoLimite() {
         given(usuario.getNome()).willReturn("Joao1");
-
         assertThrows(BusinessArgumentException.class, () -> validator.execute(usuario));
     }
 
     @Test
     void execute_naoDeveLancarExcecao_quandoNomeTrimTiverExatamente20Caracteres() {
-        given(usuario.getNome()).willReturn("12345678901234567890");
-
+        given(usuario.getNome()).willReturn("SwellingtonSoaresABC");
         assertDoesNotThrow(() -> validator.execute(usuario));
     }
 }

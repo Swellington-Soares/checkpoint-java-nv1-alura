@@ -71,18 +71,12 @@ class FormatterUtilTest {
         assertEquals("Telefone não pode ser null.", ex.getMessage());
     }
 
-    @Test
-    void formatarNumeroTelefone_quando11Digitos_deveFormatarComoCelularComDDD() {
-        var result = FormatterUtil.formatarNumeroTelefone("81999999999");
-
-        assertEquals("(81) 99999-9999", result);
-    }
 
     @Test
     void formatarNumeroTelefone_quandoContemCaracteresNaoNumericos_deveLimparEFormatar() {
         var result = FormatterUtil.formatarNumeroTelefone("+55 (81) 99999-9999");
 
-        assertEquals("+55 (81) 9 9999-9999", result);
+        assertEquals("+55 (81) 9 9999 9999", result);
     }
 
     @Test

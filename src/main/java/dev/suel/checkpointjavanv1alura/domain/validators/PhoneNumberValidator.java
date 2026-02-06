@@ -4,7 +4,7 @@ import java.util.regex.Pattern;
 
 public final class PhoneNumberValidator {
     private static final Pattern PHONE_PATTERN =
-            Pattern.compile("^\\+[1-9][0-9]{7,15}$");
+            Pattern.compile("^\\+[1-9][0-9]{11,12}$");
 
     private PhoneNumberValidator() { }
 

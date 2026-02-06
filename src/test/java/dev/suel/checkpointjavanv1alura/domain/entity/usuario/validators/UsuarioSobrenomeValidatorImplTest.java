@@ -1,5 +1,6 @@
 package dev.suel.checkpointjavanv1alura.domain.entity.usuario.validators;
 
+import dev.suel.checkpointjavanv1alura.exception.BusinessArgumentException;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
 
@@ -54,24 +55,15 @@ class UsuarioSobrenomeValidatorImplTest {
     }
 
     @Test
-    void execute_deveLancarExcecao_quandoSobrenomeForApenasLetras() {
+    void execute_naoDeveLancarExcecao_quandoSobrenomeForApenasLetras() {
         given(usuario.getSobrenome()).willReturn("Silva");
-
-        var ex = assertThrows(IllegalArgumentException.class, () -> validator.execute(usuario));
-
-        assertEquals("Sobrenome inválido, apenas letras são permitidas.", ex.getMessage());
-    }
-
-    @Test
-    void execute_naoDeveLancarExcecao_quandoSobrenomeNaoForApenasLetras_eEstiverNoLimite() {
-        given(usuario.getSobrenome()).willReturn("Silva1");
-
         assertDoesNotThrow(() -> validator.execute(usuario));
     }
 
+
     @Test
     void execute_naoDeveLancarExcecao_quandoSobrenomeTiverExatamente20Caracteres() {
-        given(usuario.getSobrenome()).willReturn("12345678901234567890");
+        given(usuario.getSobrenome()).willReturn("SantosSilvaSantosSil");
 
         assertDoesNotThrow(() -> validator.execute(usuario));
     }
