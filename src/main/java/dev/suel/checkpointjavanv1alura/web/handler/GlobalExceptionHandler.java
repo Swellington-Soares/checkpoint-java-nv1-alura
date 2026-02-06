@@ -1,11 +1,14 @@
 package dev.suel.checkpointjavanv1alura.web.handler;
 
 
+import dev.suel.checkpointjavanv1alura.exception.BusinessArgumentException;
 import dev.suel.checkpointjavanv1alura.exception.ResourceNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
+import org.apache.coyote.Response;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -50,8 +53,8 @@ public class GlobalExceptionHandler {
     }
 
 
-    @ExceptionHandler(IllegalArgumentException.class)
-    ResponseEntity<ApiErrorResponse> illegalArgumentExceptionHandle(IllegalArgumentException ex, HttpServletRequest request) {
+    @ExceptionHandler({IllegalArgumentException.class, BusinessArgumentException.class})
+    ResponseEntity<ApiErrorResponse> illegalArgumentExceptionHandle(RuntimeException ex, HttpServletRequest request) {
         return ResponseEntity.badRequest().body(ApiErrorResponse.builder()
                 .type(ApiErrorType.BUSINESS_ERROR)
                 .message(ex.getMessage())
@@ -59,6 +62,17 @@ public class GlobalExceptionHandler {
                 .code(HttpStatus.BAD_REQUEST.value())
                 .build());
 
+    }
+
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    ResponseEntity<ApiErrorResponse> httpMessageNotReadableExceptionHandle(HttpMessageNotReadableException ex, HttpServletRequest request) {
+        return ResponseEntity.badRequest()
+                .body(ApiErrorResponse.builder()
+                        .type(ApiErrorType.BUSINESS_ERROR)
+                        .message("Dados obrigatórios estão ausentes.")
+                        .path(request.getRequestURI())
+                        .code(HttpStatus.BAD_REQUEST.value())
+                        .build());
     }
 
     @ExceptionHandler(ResourceNotFoundException.class)
