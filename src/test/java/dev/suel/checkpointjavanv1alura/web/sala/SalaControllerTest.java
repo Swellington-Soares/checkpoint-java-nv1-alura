@@ -3,7 +3,6 @@ package dev.suel.checkpointjavanv1alura.web.sala;
 import dev.suel.checkpointjavanv1alura.domain.entity.sala.Sala;
 import dev.suel.checkpointjavanv1alura.domain.entity.sala.SalaMapper;
 import dev.suel.checkpointjavanv1alura.domain.entity.sala.SalaService;
-import dev.suel.checkpointjavanv1alura.web.sala.data.SalaCadastroData;
 import dev.suel.checkpointjavanv1alura.web.sala.data.SalaInfoResponse;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +14,8 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
 
-import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;

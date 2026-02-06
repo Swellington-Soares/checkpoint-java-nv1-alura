@@ -1,6 +1,5 @@
 package dev.suel.checkpointjavanv1alura.domain.entity.reserva;
 
-import org.springframework.data.domain.Slice;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;

@@ -1,24 +1,13 @@
 package dev.suel.checkpointjavanv1alura.domain.entity.usuario.validators;
 
-import dev.suel.checkpointjavanv1alura.exception.BusinessArgumentException;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.junit.jupiter.MockitoExtension;
-
-import static org.junit.jupiter.api.Assertions.*;
-
 import dev.suel.checkpointjavanv1alura.domain.entity.usuario.Usuario;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.MockedStatic;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.time.LocalDate;
-
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Answers.CALLS_REAL_METHODS;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.mockStatic;
 
 @ExtendWith(MockitoExtension.class)
 class UsuarioSobrenomeValidatorImplTest {
