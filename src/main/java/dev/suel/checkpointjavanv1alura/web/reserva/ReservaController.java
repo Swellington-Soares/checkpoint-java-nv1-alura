@@ -3,7 +3,6 @@ package dev.suel.checkpointjavanv1alura.web.reserva;
 
 import dev.suel.checkpointjavanv1alura.domain.entity.reserva.ReservaMapper;
 import dev.suel.checkpointjavanv1alura.domain.entity.reserva.ReservaService;
-import dev.suel.checkpointjavanv1alura.domain.entity.reserva.SituacaoReserva;
 import dev.suel.checkpointjavanv1alura.web.reserva.data.*;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -13,7 +12,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
 import java.util.UUID;
 
 @RestController

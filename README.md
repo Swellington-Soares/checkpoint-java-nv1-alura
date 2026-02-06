@@ -380,6 +380,7 @@ gradle test
 - Infra local com Docker Compose
 - Uso de Criterias e Specifications
 - Boas práticas de documentação e estruturação
+- Construção de testes unitários com JUnit e Mockito
 
 ---
 

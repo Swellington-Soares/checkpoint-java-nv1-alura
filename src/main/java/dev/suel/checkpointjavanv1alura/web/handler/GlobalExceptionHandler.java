@@ -4,7 +4,6 @@ package dev.suel.checkpointjavanv1alura.web.handler;
 import dev.suel.checkpointjavanv1alura.exception.BusinessArgumentException;
 import dev.suel.checkpointjavanv1alura.exception.ResourceNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
-import org.apache.coyote.Response;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
