@@ -197,6 +197,104 @@ GET /api/v1/reservas?size=20&page=0&sort=dataInicio,desc
 
 ---
 
+## 📌 Fluxo de Criação de Reserva
+
+A criação de uma reserva ocorre através do endpoint:
+
+```http
+POST /api/v1/reservas
+```
+
+---
+
+### ✅ Dados Necessários
+
+Para registrar uma reserva, o cliente deve enviar os seguintes campos no corpo da requisição:
+
+| Campo        | Tipo            | Regras |
+|-------------|----------------|--------|
+| `sala`      | `Long`          | Obrigatório |
+| `usuario`   | `Long`          | Obrigatório |
+| `dataInicio`| `LocalDateTime` | Deve ser presente ou futura |
+| `dataFim`   | `LocalDateTime` | Deve ser futura |
+
+Exemplo de request:
+
+```json
+{
+  "sala": 1,
+  "usuario": 10,
+  "dataInicio": "2026-02-10T10:00:00",
+  "dataFim": "2026-02-10T12:00:00"
+}
+```
+
+---
+
+## 🔄 Diagrama de Sequência — Cadastro de Reserva
+
+O diagrama abaixo representa o fluxo real implementado na aplicação para criação de uma reserva:
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor Cliente
+    participant Controller as ReservaController
+    participant Service as ReservaService
+    participant Repo as ReservaRepository
+    participant SalaSvc as SalaService
+    participant UserSvc as UsuarioService
+    participant Validators as IReservaValidator
+
+    Cliente->>Controller: POST /api/v1/reservas\nbody: {sala, usuario, dataInicio, dataFim}
+
+    Controller->>Controller: Validação DTO (@Valid)\nNotNull + Future/FutureOrPresent
+
+    Controller->>Service: reservarSala(salaId, usuarioId, dataInicio, dataFim)
+
+    Service->>Repo: buscarConflitosPorSalaOuUsuario(salaId, usuarioId, dataInicio, dataFim)
+
+    Repo-->>Service: Reservas ATIVAS conflitantes
+
+    alt Existe conflito
+        Service-->>Controller: throw SalaJaReservadaException
+        Controller-->>Cliente: 409 Conflict\n"Sala já reservada"
+    else Sem conflito
+        Service->>UserSvc: findById(usuarioId)
+        UserSvc-->>Service: Usuario
+
+        Service->>SalaSvc: findById(salaId)
+        SalaSvc-->>Service: Sala
+
+        Service->>Service: Criar Reserva.withId()\nsetUsuario, setSala, setDatas\nsituacao=ATIVA
+
+        Service->>Validators: executar validações de negócio
+        Validators-->>Service: OK
+
+        Service->>Repo: save(reserva)
+        Repo-->>Service: Reserva persistida
+
+        Service-->>Controller: Reserva criada
+        Controller-->>Cliente: 200 OK\nReservaInfoResponse
+    end
+```
+
+---
+
+## 🚫 Regra de Conflito de Agenda
+
+Uma sala ou usuário não pode possuir reservas sobrepostas no mesmo intervalo de tempo.
+
+A aplicação verifica conflitos com a seguinte regra:
+
+- `dataInicio < dataFimNova`
+- `dataFim > dataInicioNova`
+- Reserva deve estar com situação **ATIVA**
+
+Isso garante que não existam reservas concorrentes para o mesmo período.
+
+----
+
 ## ✋ Exemplo de Cancelamento de Reserva
 
 Endpoint:
@@ -280,6 +378,7 @@ gradle test
 - Validações com Bean Validation
 - Filtros + paginação com `Pageable`
 - Infra local com Docker Compose
+- Uso de Criterias e Specifications
 - Boas práticas de documentação e estruturação
 
 ---
