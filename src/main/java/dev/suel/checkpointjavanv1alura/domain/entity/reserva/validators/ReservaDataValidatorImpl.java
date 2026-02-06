@@ -1,6 +1,7 @@
 package dev.suel.checkpointjavanv1alura.domain.entity.reserva.validators;
 
 import dev.suel.checkpointjavanv1alura.domain.entity.reserva.Reserva;
+import dev.suel.checkpointjavanv1alura.exception.BusinessArgumentException;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
@@ -13,13 +14,13 @@ public class ReservaDataValidatorImpl implements  IReservaValidator {
         var dataFim = reserva.getDataFim();
 
         if (dataInicio == null || dataInicio.isBefore(LocalDateTime.now()))
-            throw new IllegalArgumentException("Data de início inválida.");
+            throw new BusinessArgumentException("Data de início inválida.");
 
         if (dataFim == null || dataFim.isBefore(LocalDateTime.now()))
-            throw  new IllegalArgumentException("Data de fim inválida.");
+            throw  new BusinessArgumentException("Data de fim inválida.");
 
         if (dataInicio.isAfter(dataFim))
-            throw new IllegalArgumentException("Data início não pode ser depois do fim.");
+            throw new BusinessArgumentException("Data início não pode ser depois do fim.");
 
     }
 
