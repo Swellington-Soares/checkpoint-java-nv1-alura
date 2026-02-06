@@ -91,6 +91,7 @@ dependencies {
     testImplementation("org.springframework.boot:spring-boot-starter-webmvc-test")
     runtimeOnly("org.springframework.boot:spring-boot-docker-compose")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+    implementation("net.datafaker:datafaker:2.5.2")
 }
 
 tasks.withType<Test> {
