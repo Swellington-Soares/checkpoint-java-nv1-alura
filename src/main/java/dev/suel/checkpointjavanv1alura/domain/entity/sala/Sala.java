@@ -50,16 +50,6 @@ public class Sala {
                 );
     }
 
-    private void adicionarReserva(Reserva reserva) {
-        reservas.add(reserva);
-        reserva.setSala(this);
-    }
-
-    public void removerReserva(Reserva reserva) {
-        reservas.remove(reserva);
-        reserva.setSala(null);
-    }
-
     @Generated
     @PrePersist
     void prePersist() {

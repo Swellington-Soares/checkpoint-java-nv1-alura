@@ -40,46 +40,28 @@ public class FormatterUtil {
 
         var telefone = valor.replaceAll("\\D", "");
 
-        /**
-         * 5 0
-         * 5 1
-         * 8 2
-         * 1 3
-         * 9 4
-         * 9 5
-         * 4 6
-         * 7 7
-         * 7 8
-         * 6 9
-         * 3 10
-         * 9 11
-         * 5 12
-         */
-
         if (telefone.length() == 13) {
-            return new StringBuilder("+")
-                    .append(telefone, 0, 2)
-                    .append(" (")
-                    .append(telefone, 2, 4)
-                    .append(") ")
-                    .append(telefone, 4, 5)
-                    .append(" ")
-                    .append(telefone, 5, 9)
-                    .append(" ")
-                    .append(telefone, 9, 13)
-                    .toString();
+            return "+" +
+                    telefone.substring(0, 2) +
+                    " (" +
+                    telefone.substring(2, 4) +
+                    ") " +
+                    telefone.charAt(4) +
+                    " " +
+                    telefone.substring(5, 9) +
+                    " " +
+                    telefone.substring(9, 13);
         }
 
         if (telefone.length() == 12) {
-            return new StringBuilder("+")
-                    .append(telefone, 0, 2)
-                    .append(" (")
-                    .append(telefone, 2, 4)
-                    .append(") ")
-                    .append(telefone, 4, 8)
-                    .append(" ")
-                    .append(telefone, 8, 12)
-                    .toString();
+            return "+" +
+                    telefone.substring(0, 2) +
+                    " (" +
+                    telefone.substring(2, 4) +
+                    ") " +
+                    telefone.substring(4, 8) +
+                    " " +
+                    telefone.substring(8, 12);
         }
 
         throw new IllegalArgumentException("Telefone deve ter 12 e 14 dígitos.");

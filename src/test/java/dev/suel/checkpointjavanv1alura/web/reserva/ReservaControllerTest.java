@@ -49,8 +49,8 @@ class ReservaControllerTest {
         );
 
         given(reservaService.findAll(any(Pageable.class))).willReturn(slice);
-        given(reservaMapper.toInfoResponse(r1)).willReturn(infoResponse(r1.getId(), false));
-        given(reservaMapper.toInfoResponse(r2)).willReturn(infoResponse(r2.getId(), false));
+        given(reservaMapper.toInfoResponse(r1)).willReturn(infoResponse(r1.getId()));
+        given(reservaMapper.toInfoResponse(r2)).willReturn(infoResponse(r2.getId()));
 
         mvc.perform(get("/api/v1/reservas")
                         .param("page", "0")
@@ -79,7 +79,7 @@ class ReservaControllerTest {
 
         given(reservaService.reservarSala(eq(1L), eq(2L), any(LocalDateTime.class), any(LocalDateTime.class)))
                 .willReturn(reserva);
-        given(reservaMapper.toInfoResponse(reserva)).willReturn(infoResponse(id, false));
+        given(reservaMapper.toInfoResponse(reserva)).willReturn(infoResponse(id));
 
         var body = """
                 {
@@ -204,7 +204,7 @@ class ReservaControllerTest {
         var reserva = reservaComId(id);
 
         given(reservaService.getById(id)).willReturn(reserva);
-        given(reservaMapper.toInfoResponse(reserva)).willReturn(infoResponse(id, false));
+        given(reservaMapper.toInfoResponse(reserva)).willReturn(infoResponse(id));
 
         mvc.perform(get("/api/v1/reservas/{id}", id)
                         .accept(MediaType.APPLICATION_JSON))
@@ -238,7 +238,7 @@ class ReservaControllerTest {
         return r;
     }
 
-    private ReservaInfoResponse infoResponse(UUID id, boolean cancelado) {
+    private ReservaInfoResponse infoResponse(UUID id) {
         return new ReservaInfoResponse(
                 id,
                 new ReservaInfoResponse.UsuarioInfo("52998224725", "Suel", "suel@email.com", "81999999999"),
@@ -246,7 +246,7 @@ class ReservaControllerTest {
                 "2030-01-01T10:00:00",
                 "2030-01-01T12:00:00",
                 SituacaoReserva.ATIVA,
-                cancelado
+                false
         );
     }
 }
