@@ -64,7 +64,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(HttpMessageNotReadableException.class)
-    ResponseEntity<ApiErrorResponse> httpMessageNotReadableExceptionHandle(HttpMessageNotReadableException ex, HttpServletRequest request) {
+    ResponseEntity<ApiErrorResponse> httpMessageNotReadableExceptionHandle(HttpServletRequest request) {
         return ResponseEntity.badRequest()
                 .body(ApiErrorResponse.builder()
                         .type(ApiErrorType.BUSINESS_ERROR)

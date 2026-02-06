@@ -27,7 +27,7 @@ public class DatabaseSeeder implements ApplicationRunner {
     private final UsuarioRepository usuarioRepository;
 
     @Override
-    public void run(@NonNull ApplicationArguments args) throws Exception {
+    public void run(@NonNull ApplicationArguments args) {
         if (!args.containsOption("seed:db")) return;
         Random random = new Random(Instant.now().getEpochSecond());
         reservaRepository.deleteAll();
